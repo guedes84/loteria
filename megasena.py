@@ -84,7 +84,23 @@ def resultados_anteriores():
                 # print(lista_texto_concurso.text, " - ", numero[:])
                 #########################################
 
-            print(lista_texto_concurso.text + " {0}-{1}-{2}-{3}-{4}-{5}".format(*dezenas))
+            ''' Format: Concurso - data - dezenas '''
+            # print(lista_texto_concurso.text + " {0}-{1}-{2}-{3}-{4}-{5}".format(*dezenas))
+
+            regex = re.compile(r'\s\d+\s')
+            concurso = regex.findall(lista_texto_concurso.text)
+
+            ''' Format: Concurso dezenas '''
+            # print("{0}".format(*concurso) + " {0}-{1}-{2}-{3}-{4}-{5}".format(*dezenas))
+
+            ''' Escreve as dezenas no arquivo dezenas-mega.txt '''
+            f = open("D:\\megasena\\todossorteios.txt", "a")
+            f.write("{0}".format(*concurso) + " {0} {1} {2} {3} {4} {5}\n".format(*dezenas))
+            f.close()
+
+            # f = open("D:\\megasena\\todossorteios.txt", "r")
+            # print(f.read())
+
             del dezenas[:]
 
     except NoSuchElementException as erro:
