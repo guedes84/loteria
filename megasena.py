@@ -9,7 +9,8 @@ from selenium.common.exceptions import NoSuchElementException
 driver = webdriver.Chrome(executable_path="C:\selenium\chromedriver.exe")
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
-numero=[]
+numero=['']
+numeros=[[''],['']]
 
 ''' Página que iremos acessar '''
 driver.get("http://loterias.caixa.gov.br/wps/portal/loterias/landing/megasena")
@@ -69,19 +70,29 @@ def resultados_anteriores():
                 expected_cond.presence_of_element_located((By.ID, "buscaConcurso"))
             )
 
-            print(page.dri)
-            time.sleep(2)
-        #     # driver.executeScript("document.getElementById('buscaConcurso').setAttribute('value', '"+x+"')")
-        #     # driver.execute_script("document.getElementById('buscaConcurso').value='"+str(x)+"'")
-        #     driver.find_element_by_id("buscaConcurso").send_keys(x, Keys.ENTER)
-        #
-        #     time.sleep(1)
-        #     ''' Encontra o campo com as dezenas'''
-        #     lista_campo_dezenas = driver.find_element_by_id("ulDezenas")
-        #     ''' percorre os campos html "li" com os valores de cada dezena'''
-        #     lista_numeros = lista_campo_dezenas.find_elements_by_tag_name("li")
-        #     ''' Pega o valor textual do caralho h2 que escreve "Resultado Concurso" '''
-        #     lista_texto_concurso = driver.find_element_by_xpath("//h2[contains(text(), 'Resultado')]/span[contains(text(), 'Concurso')]")
+            # driver.executeScript("document.getElementById('buscaConcurso').setAttribute('value', '"+x+"')")
+            # driver.execute_script("document.getElementById('buscaConcurso').value='"+str(x)+"'")
+            enviaconcurso = driver.find_element_by_id("buscaConcurso")
+            enviaconcurso.send_keys(x)
+            enviaconcurso.send_keys(Keys.RETURN)
+
+            time.sleep(1)
+
+            enviaconcurso.clear()
+            ''' Encontra o campo com as dezenas'''
+            lista_campo_dezenas = driver.find_element_by_id("ulDezenas")
+            ''' percorre os campos html "li" com os valores de cada dezena'''
+            lista_numeros = lista_campo_dezenas.find_elements_by_tag_name("li")
+            ''' Pega o valor textual do caralho h2 que escreve "Resultado Concurso" '''
+            lista_texto_concurso = driver.find_element_by_xpath("//h2[contains(text(), 'Resultado')]/span[contains(text(), 'Concurso')]")
+
+            for x, i in enumerate(lista_numeros, 0):
+                print(type(lista_numeros))
+                numeros.insert(x,lista_texto_concurso.text+"-"+lista_numeros)
+                ################## DEBUG ################
+                # print(lista_texto_concurso.text, " - ", numero[:])
+                #########################################
+                print(numeros[x])
 
     except NoSuchElementException as erro:
         print("ERRO: Busca pelos campos html.\nCAUSA: Elementos não encontrados.")
